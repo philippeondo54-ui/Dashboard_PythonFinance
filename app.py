@@ -25,6 +25,11 @@ df["Diff"] = df["Value"] - df["AmountAbs"]
 # Sidebar options
 st.sidebar.subheader("Options")
 show_data = st.sidebar.checkbox("Afficher les données brutes")
+colonnes_categorique = df.select_dtypes(include=['object', 'category']).columns.tolist()
+for col in colonnes_categorique:
+    valeurs = df[col].unique().tolist()
+    selection = st.sidebar.multiselect(f"{col}", valeurs, default=valeurs)
+    df = df[df[col].isin(selection)]
 colonnes_numerique = df.select_dtypes(include=['float64', 'int64']).columns.tolist()
 col_x = st.sidebar.selectbox("Variable X (catégorique)", colonnes_categorique)
 col_y = st.sidebar.selectbox("Variable Y (numérique)", colonnes_numerique)
