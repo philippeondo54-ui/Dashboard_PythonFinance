@@ -9,7 +9,7 @@ st.set_page_config(
     page_title="Dashboard Transactions",
     layout="wide",
 )
-st.header(":blue[Tableau de bord des transactions]", divider="rainbow")
+st.header("Tableau de bord des transactions", divider="rainbow")
 
 # Fonction de chargement des données avec cache
 @st.cache_data
@@ -25,6 +25,11 @@ df["Diff"] = df["Value"] - df["AmountAbs"]
 # Sidebar options
 st.sidebar.subheader("Options")
 show_data = st.sidebar.checkbox("Afficher les données brutes")
+colonnes_numerique = df.select_dtypes(include=['float64', 'int64']).columns.tolist()
+col_x = st.sidebar.selectbox("Variable X (catégorique)", colonnes_categorique)
+col_y = st.sidebar.selectbox("Variable Y (numérique)", colonnes_numerique)
+col_color = st.sidebar.selectbox("Variable couleur (optionnel)", [None] + colonnes_categorique)
+
 
 # Tabs
 tabs = st.tabs(["Vue d’ensemble", "Par stratégie de pricing", "Fraudes", "Catégories de produits", ])
@@ -156,6 +161,6 @@ with tabs[3]:
     fig = px.histogram(df, x="ProductId", y="PricingStrategy", color="PricingStrategy")
     st.plotly_chart(fig, use_container_width=True)
 
-
+st.header("Telecharger/Visualiser le dataset")
 if show_data:
     st.dataframe(df, use_container_width=True)
