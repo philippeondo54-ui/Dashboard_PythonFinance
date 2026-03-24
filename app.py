@@ -122,7 +122,10 @@ with tabs[2]:
     with col2:
         st.metric("Montant total des fraudes", df["Amount"][df["FraudResult"] == 1].sum())
     with col3:
-        st.metric("Jour le plus fraudé", df["Transaction Day"][df["FraudResult"] == 1].max())
+         fraudes_par_jour = df.groupby("Transaction Day")["FraudResult"].sum()
+         jour_plus_fraude = fraudes_par_jour.idxmax()
+         st.metric("Jour le plus fraudé", jour_plus_fraude)
+
 
     st.subheader("Transactions individuelles dans le temps")
     fig = px.scatter(df, x="Transaction Date", y="Amount", color="FraudResult",
