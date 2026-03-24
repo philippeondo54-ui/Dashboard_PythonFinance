@@ -25,8 +25,6 @@ df["Diff"] = df["Value"] - df["AmountAbs"]
 # Sidebar options
 st.sidebar.subheader("Options")
 show_data = st.sidebar.checkbox("Afficher les données brutes")
-if show_data:
-    st.dataframe(df, use_container_width=True)
 
 # Tabs
 tabs = st.tabs(["Vue d’ensemble", "Par stratégie de pricing", "Fraudes", "Catégories de produits", ])
@@ -157,3 +155,7 @@ with tabs[3]:
     st.subheader("Répartition des stratégies de prix par produit")
     fig = px.histogram(df, x="ProductId", y="PricingStrategy", color="PricingStrategy")
     st.plotly_chart(fig, use_container_width=True)
+
+
+if show_data:
+    st.dataframe(df, use_container_width=True)
